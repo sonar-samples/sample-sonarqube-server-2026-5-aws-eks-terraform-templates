@@ -1,0 +1,87 @@
+#
+# AWS
+#
+
+aws_region = "us-east-1"
+name       = "sonarqube-eks"
+
+tags = {
+  Team  = ""
+  Owner = ""
+}
+
+#
+# Network
+#
+
+azs = [
+  "us-east-1a",
+  "us-east-1b"
+]
+
+vpc_cidr = "10.0.0.0/16"
+
+public_subnet_cidrs = [
+  "10.0.0.0/24",
+  "10.0.1.0/24"
+]
+
+app_subnet_cidrs = [
+  "10.0.10.0/24",
+  "10.0.11.0/24"
+]
+
+data_subnet_cidrs = [
+  "10.0.20.0/24",
+  "10.0.21.0/24"
+]
+
+#
+# Amazon EKS
+#
+
+kubernetes_version = "1.35"
+
+# Use the full IAM role ARN, including any path. EKS rejects a path-less ARN.
+admin_principal_arns = [
+  "arn:aws:iam::123456789012:role/REPLACE_WITH_EKS_ADMIN_ROLE"
+]
+
+#
+# Route 53 / DNS
+#
+# SonarQube is served at https://<host_name>.<domain_name>
+#
+
+hosted_zone_id = "REPLACE_WITH_ROUTE53_HOSTED_ZONE_ID"
+domain_name    = "example.com"
+host_name      = "sonarqube"
+
+#
+# SonarQube
+#
+
+sonarqube_chart_version = "2026.5.1001"
+
+#
+# Agentic features
+#
+# enable_agentic also creates the agentic node group, storage, and secrets.
+# Setting it back to false destroys them and their data; use agentic_paused for upgrades.
+#
+
+enable_agentic        = false
+agentic_paused        = false
+runtime_replica_count = 1
+storage_backend       = "s3"
+
+#
+# Agent LLM egress
+#
+# External hostnames allowed through the SonarQube Agent Egress Proxy.
+# The S3 bucket hostnames are added automatically.
+#
+
+llm_allowed_domains = [
+  "api.anthropic.com"
+]
